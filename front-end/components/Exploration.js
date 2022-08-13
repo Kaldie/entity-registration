@@ -81,7 +81,15 @@ export default function Exploration({ data }) {
                 renderItem={item => (
                     <List.Item>
                         <Link href={`/entity/${item._id}/modification`}>
-                            <Card hoverable title={item.name}>Card content</Card>
+                            <Card hoverable title={item.name}>
+                                <p><h4>Description:</h4>
+                                    {item.description}
+                                </p>
+                                <p>
+                                    <h4>Number of attributes:</h4>
+                                    {item.attributes.length}
+                                </p>
+                            </Card>
                         </Link>
                     </List.Item>
                 )}

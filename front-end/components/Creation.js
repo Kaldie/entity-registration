@@ -1,6 +1,6 @@
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Select } from 'antd';
-
+import { useRouter } from 'next/router'
 const { TextArea } = Input;
 
 const formItemLayout = {
@@ -37,16 +37,31 @@ const versionTypes = [
 
 
 export default function Creation({ entity }) {
+    const router = useRouter()
+
     async function onFinish(values) {
         console.log('Received values of form:', values);
-        fetch(`/api/entities`, {
+        await fetch(`/api/entities`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(values)
         })
+        router.push('/entity/exploration')
+    }
+
+    async function deleteEntity(entity) {
+        console.log("clicked delete entity", entity)
+        await fetch(`/api/entity/${entity._id}`, {
+            method: 'DELETE',
+            body: JSON.stringify(entity)
+        })
+        router.push('/entity/exploration')
     }
 
     return (
+
+
+
         <Form name="Creation" onFinish={onFinish} autoComplete="off" initialValues={entity}>
 
             <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Missing name' }]} {...formItemLayout}>
@@ -136,10 +151,23 @@ export default function Creation({ entity }) {
                     </>
                 )}
             </Form.List >
-            <Form.Item>
-                <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
+            <Form.Item noStyle>
+                <Form.Item
+                    {...(entity ? { style: { display: 'inline-block', width: 'calc(50%)' } } : {})}>
+                    <Button type="primary" htmlType="submit" name='submit' value="Update">
+                        Submit
+                    </Button>
+                </Form.Item>
+                {
+                    entity ?
+                        <Form.Item
+                            style={{ display: 'inline-block', width: 'calc(50%)' }}>
+                            <Button type="danger" onClick={() => deleteEntity(entity)}>
+                                Delete
+                            </Button>
+                        </Form.Item>
+                        : <></>
+                }
             </Form.Item>
         </Form >
     );

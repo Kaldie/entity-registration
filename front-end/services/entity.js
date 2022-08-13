@@ -25,8 +25,11 @@ export default class EntityService {
         const query = { _id: objectId }
         const collection = await this.mongo_client.get_entity_collection()
         const element = await collection.findOne(query)
-        element._id = element._id.toString()
-        return element
+        if (element) {
+            element._id = element._id.toString()
+            return element
+        }
+        return null
     }
 
     async get_all_entities_as_list() {
@@ -41,5 +44,17 @@ export default class EntityService {
             elements.push(element)
         })
         return elements
+    }
+
+    async delete_entity(entity) {
+        const collection = await this.mongo_client.get_entity_collection()
+        const { _id } = entity
+        console.warn(_id)
+        const stuff = await collection.deleteOne({
+            _id: ObjectId(entity._id)
+        })
+        console.warn(stuff, entity, entity.description, {
+            _id: ObjectId(entity._id)
+        })
     }
 }

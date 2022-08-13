@@ -5,7 +5,6 @@ const entity_service = new EntityService()
 
 export default async function userHandler(req, res) {
     const {
-        query: { id, name },
         method,
     } = req
 
