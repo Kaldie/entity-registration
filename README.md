@@ -22,7 +22,18 @@ The current state is that the entity creation, modification and finding of entit
 
 - Introduce connectors to talk to other systems
 - Similarly, create connectors that listen to other systems
+- Determine location of deployment k8s or cloud native
+  - If k8s
+    - Seperate backend and frontend further
+  - If cloud
+    - Adapt current architecture to suitable cloud vendors
 
 ## Dev
 
+### Start up
+
 docker-compose up and start working :)
+
+### Architecture
+
+Current architecture is based around a nosql database and nextjs which is mainly used as a frontend and provides some backend functionality. Using API and getServerSideProps. Nextjs provides some functionality to do treeshaking such that the sensitive parts of the application will not be exposed. However, it needs to be seen if not a decent back-end needs to be created.
