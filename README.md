@@ -22,3 +22,7 @@ The current state is that the entity creation, modification and finding of entit
 
 - Introduce connectors to talk to other systems
 - Similarly, create connectors that listen to other systems
+
+## Dev
+
+docker-compose up and start working :)
