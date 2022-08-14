@@ -1,6 +1,6 @@
-import 'antd/dist/antd.css';
-import '../styles/globals.css'
-import Layout from '../components/Layout'
+import "antd/dist/antd.css";
+import "../styles/globals.css"
+import Layout from "../components/Layout"
 
 const { Footer, Sider, Content } = Layout;
 

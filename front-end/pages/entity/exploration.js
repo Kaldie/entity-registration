@@ -1,5 +1,5 @@
-import Exploration from '../../components/Exploration'
-import EntityService from '../../services/entity'
+import Exploration from "../../components/Entity/Exploration"
+import EntityService from "../../services/entity"
 
 export default function creation({ data }) {
     return (
@@ -11,8 +11,8 @@ export default function creation({ data }) {
 
 export async function getServerSideProps({ res }) {
     res.setHeader(
-        'Cache-Control',
-        'public, s-maxage=10, stale-while-revalidate=59'
+        "Cache-Control",
+        "public, s-maxage=10, stale-while-revalidate=59"
     )
     const data = await new EntityService().get_all_entities_as_list()
 

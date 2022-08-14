@@ -1,5 +1,5 @@
-import { Space, Row, Col, Image } from 'antd'
-import entity from '../public/entity.jpg'
+import { Space, Row, Col, Image } from "antd"
+import entity from "../public/entity.jpg"
 export default function Home() {
   return (
     <>
@@ -10,7 +10,7 @@ export default function Home() {
       </Row>
 
       <Row justify="space-evenly">
-        <Image src='/entity.jpg' preview={false} />
+        <Image src="/entity.jpg" preview={false} />
       </Row>
 
     </>

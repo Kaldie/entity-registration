@@ -1,8 +1,7 @@
-import Creation from '../../components/Creation'
+import Creation from "../../components/Entity/Creation"
+
 export default function creation() {
     return (
-        <>
-            <Creation />
-        </>
+        <Creation />
     )
 }

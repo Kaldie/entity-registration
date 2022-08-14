@@ -1,7 +1,8 @@
-import { Input, Cascader, List, Card } from 'antd'
-import { useState } from 'react'
-import Link from 'next/link'
-import { filter_entities } from '../util/entities';
+import { Input, Cascader, List, Card } from "antd"
+import { useState } from "react"
+import Link from "next/link"
+import { filter_entities } from "../../util/entities";
+
 
 const { Search } = Input;
 
@@ -35,14 +36,12 @@ const searchOptions = [{
 
 let currentSearchOption
 
-
-
 const onSearchTypeChange = (selected) => {
     currentSearchOption = selected
 }
 
 
-export default function Exploration({ data }) {
+export default ({ data }) => {
     let filtered_data = data
     const [newData, setNewData] = useState(filtered_data)
 
@@ -64,7 +63,7 @@ export default function Exploration({ data }) {
                     options={searchOptions}
                     placeholder="type"
                     style={{ width: 150 }} />}
-                placeholder="input search text" onSearch={onSearch} size='large'
+                placeholder="input search text" onSearch={onSearch} size="large"
             />
 
             <List
@@ -81,13 +80,15 @@ export default function Exploration({ data }) {
                 renderItem={item => (
                     <List.Item>
                         <Link href={`/entity/${item._id}/modification`}>
-                            <Card hoverable title={item.name}>
-                                <p><h4>Description:</h4>
+                            <Card hoverable title={item.name} bodyStyle={{ padding: "0" }}>
+                                <h4>Description:</h4>
+                                <p>
                                     {item.description}
                                 </p>
+
+                                <h4>Number of attributes:</h4>
                                 <p>
-                                    <h4>Number of attributes:</h4>
-                                    {item.attributes.length}
+                                    {item.attributes ? item.attributes.length : 0}
                                 </p>
                             </Card>
                         </Link>

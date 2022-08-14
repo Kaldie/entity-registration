@@ -1,5 +1,5 @@
 import InternalMongoClient from "./mongo";
-import { ObjectId } from 'mongodb'
+import { ObjectId } from "mongodb"
 
 
 export default class EntityService {
@@ -43,6 +43,29 @@ export default class EntityService {
             element._id = element._id.toString()
             elements.push(element)
         })
+
+        if (elements.length === 0) {
+            const example = {
+                name: "Pylon",
+                description: "A element that keeps lines of the ground",
+                attributes: [
+                    {
+                        name: "Material",
+                        type: "Text",
+                        version: "None",
+                        description: "Material of which the pylon is made"
+                    },
+                    {
+                        name: "NeedMaintanance",
+                        type: "Boolean",
+                        version: "None",
+                        description: "Is it in dire need of maintance"
+                    }
+                ]
+            }
+            await this.add_entity(example)
+            return this.get_all_entities_as_list()
+        }
         return elements
     }
 

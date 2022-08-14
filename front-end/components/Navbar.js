@@ -1,18 +1,26 @@
-import { Menu } from 'antd'
-import { useRouter } from 'next/router'
+import { Menu } from "antd"
+import { useRouter } from "next/router"
 
 
 export default function Navbar() {
     const router = useRouter()
     const items = [
-        { label: "Home", key: "Home", onClick: () => router.push('/') },
+        { label: "Home", key: "Home", onClick: () => router.push("/") },
         {
             label: "Entities",
             key: "Entities",
             children:
                 [
-                    { label: "Exploration", key: "entity_exploration", onClick: () => router.push('/entity/exploration') },
-                    { label: "Creation", key: "entity_creation", onClick: () => router.push('/entity/creation') },
+                    { label: "Exploration", key: "entity_exploration", onClick: () => router.push("/entity/exploration") },
+                    { label: "Creation", key: "entity_creation", onClick: () => router.push("/entity/creation") },
+                ]
+        },
+        {
+            label: "Instance",
+            key: "Instance",
+            children:
+                [
+                    { label: "Exploration", key: "instance_exploration", onClick: () => router.push("/instance/exploration") }
                 ]
         }
     ];
@@ -20,7 +28,7 @@ export default function Navbar() {
     return (
         <>
             <div className="logo" />
-            <Menu items={items} mode="horizontal" defaultSelectedKeys={['Home']} theme="dark" />
+            <Menu items={items} mode="horizontal" defaultSelectedKeys={["Home"]} theme="dark" />
         </>
     )
 }

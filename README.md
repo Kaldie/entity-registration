@@ -13,6 +13,10 @@ The current state is that the entity creation, modification and finding of entit
 
 ## Future State
 
+- Refactor structure of API endpoints
+
+  - entities and instances are not threated equal
+
 - Add instances of instances
 - Modification of instances
 - Lookup of instances

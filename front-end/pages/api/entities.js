@@ -9,17 +9,12 @@ export default async function userHandler(req, res) {
     } = req
 
     switch (method) {
-        case 'GET':
-
-            // Get data from your database
-            res.status(200).json({ magic: 'snow' })
-            break
-        case 'POST':
+        case "POST":
             entity_service.add_entity(req.body)
-            res.status(200).json({ name: 'John Doe' })
+            res.status(200)
             break
         default:
-            res.setHeader('Allow', ['GET', 'POST'])
+            res.setHeader("Allow", ["POST"])
             res.status(405).end(`Method ${method} Not Allowed`)
     }
     return res
