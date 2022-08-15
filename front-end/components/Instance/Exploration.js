@@ -1,6 +1,24 @@
-import { AutoComplete, Input, Col, Row, List, Card, Space } from "antd"
+import { AutoComplete, Input, Col, Row, List, Card } from "antd"
 import Link from "next/link"
 import { useState } from "react";
+
+const renderAttributeInstance = (attributeInstance, attributeDefinition) => {
+
+    if (attributeInstance === undefined && attributeDefinition.defaultValue !== undefined) {
+        return renderAttributeInstance(attributeDefinition.defaultValue, attributeType)
+    }
+
+    if (attributeInstance === undefined) {
+        return "Undefined"
+    }
+
+    switch (attributeDefinition.type) {
+        case "Boolean":
+            return attributeInstance ? "True" : "False"
+        default:
+            return attributeInstance
+    }
+}
 
 export default function Exploration({ entities, _initialEntity }) {
 
@@ -55,21 +73,22 @@ export default function Exploration({ entities, _initialEntity }) {
                         grid={{
                             gutter: 16,
                             xs: 1,
-                            sm: 2,
+                            sm: 3,
                             md: 4,
                             lg: 4,
                             xl: 6,
-                            xxl: 3,
-                        }} dataSource={state.instances}
+                            xxl: 6,
+                        }}
+                        dataSource={state.instances}
                         renderItem={item => (
                             <List.Item key={item._id}>
                                 <Link href={`/instance/${state.selectedEntity._id}/${item._id}/creation`}>
-                                    <Card hoverable>
+                                    <Card hoverable size="small">
                                         {
                                             state.selectedEntity.attributes.map(attribute =>
                                                 <Row key={attribute.name}>
                                                     <Col>
-                                                        {attribute.name}: {item[attribute.name]}
+                                                        {attribute.name}: {renderAttributeInstance(item[attribute.name], attribute)}
                                                     </Col>
                                                 </Row>
                                             )}
