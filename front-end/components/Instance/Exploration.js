@@ -67,7 +67,7 @@ export default function Exploration({ entities, _initialEntity }) {
                                     <Card hoverable>
                                         {
                                             state.selectedEntity.attributes.map(attribute =>
-                                                <Row>
+                                                <Row key={attribute.name}>
                                                     <Col>
                                                         {attribute.name}: {item[attribute.name]}
                                                     </Col>
