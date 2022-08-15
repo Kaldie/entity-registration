@@ -41,7 +41,7 @@ const onSearchTypeChange = (selected) => {
 }
 
 
-export default ({ data }) => {
+export default function Exploration({ data }) {
     let filtered_data = data
     const [newData, setNewData] = useState(filtered_data)
 

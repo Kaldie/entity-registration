@@ -10,7 +10,7 @@ export default function Home() {
       </Row>
 
       <Row justify="space-evenly">
-        <Image src="/entity.jpg" preview={false} />
+        <Image src="/entity.jpg" preview={false} alt="Random Image" />
       </Row>
 
     </>
