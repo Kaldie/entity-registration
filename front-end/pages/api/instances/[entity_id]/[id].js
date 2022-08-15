@@ -19,7 +19,7 @@ export default async function userHandler(req, res) {
             res.status(204).end()
             break;
         case "POST":
-            entity_service.add_entity(req.body)
+            instanceService.add_instance(req.body)
             res.status(200).end()
             break;
         default:

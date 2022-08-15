@@ -17,7 +17,6 @@ export default function Exploration({ entities, _initialEntity }) {
 
 
     const onSelect = async (_data, option) => {
-        console.info(option)
         const response = await fetch(`/api/instances/${option.entity_id}/instance`, {
             method: "GET",
         })
@@ -68,10 +67,11 @@ export default function Exploration({ entities, _initialEntity }) {
                                     <Card hoverable>
                                         {
                                             state.selectedEntity.attributes.map(attribute =>
-                                                <Space key={["Space", item._id, attribute.name]}>
-                                                    <div key={attribute.name}>{attribute.name}:</div>
-                                                    <div key={[attribute.name, 'value']}>{item[attribute.name]}</div>
-                                                </Space>
+                                                <Row>
+                                                    <Col>
+                                                        {attribute.name}: {item[attribute.name]}
+                                                    </Col>
+                                                </Row>
                                             )}
 
                                     </Card>

@@ -33,7 +33,6 @@ export default class InstanceService {
     }
 
     async get_all_instances_by_entity(entity) {
-        console.info(entity)
         const query = { entity_id: entity._id }
         const options = {
             // projection: { _id: 0 }
@@ -73,11 +72,9 @@ export default class InstanceService {
     async delete_instance(instance) {
         const collection = await this.mongo_client.get_instance_collection()
         const { _id } = instance
-        console.warn(_id)
         const stuff = await collection.deleteOne({
             _id: ObjectId(instance._id)
         })
-        console.warn(stuff, instance)
     }
 
     async delete_instance_by_id(id) {

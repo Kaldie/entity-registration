@@ -40,7 +40,6 @@ export default function Creation({ entity }) {
     const router = useRouter()
 
     async function onFinish(values) {
-        console.log("Received values of form:", values);
         await fetch(`/api/entities`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -50,7 +49,6 @@ export default function Creation({ entity }) {
     }
 
     async function deleteEntity(entity) {
-        console.log("clicked delete entity", entity)
         await fetch(`/api/entities/${entity._id}`, {
             method: "DELETE",
             body: JSON.stringify(entity)
@@ -60,7 +58,6 @@ export default function Creation({ entity }) {
 
     function createInstance(stuff) {
         router.push(`/instance/${entity._id}/creation`)
-        console.warn(stuff)
     }
 
     return (

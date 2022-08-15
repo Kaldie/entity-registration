@@ -72,11 +72,7 @@ export default class EntityService {
     async delete_entity(entity) {
         const collection = await this.mongo_client.get_entity_collection()
         const { _id } = entity
-        console.warn(_id)
-        const stuff = await collection.deleteOne({
-            _id: ObjectId(entity._id)
-        })
-        console.warn(stuff, entity, entity.description, {
+        await collection.deleteOne({
             _id: ObjectId(entity._id)
         })
     }

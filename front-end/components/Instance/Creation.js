@@ -94,7 +94,6 @@ export default function Creation({ entity, instance }) {
     }
 
     const deleteInstance = async () => {
-        console.log("clicked delete instance", instance)
         await fetch(`/api/instances/${entity._id}/${instance._id}`, {
             method: "DELETE",
             body: JSON.stringify(instance)
