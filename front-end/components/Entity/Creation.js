@@ -3,6 +3,8 @@ import { Button, Form, Input, Select, Row, Col } from "antd";
 import { useRouter } from "next/router"
 const { TextArea } = Input;
 
+import { useState } from "react";
+
 const formItemLayout = {
     labelCol: {
         xs: {
@@ -26,17 +28,19 @@ const formItemLayout = {
 const attributeTypes = [
     "Text",
     "Boolean",
-    "Number"
+    "Number",
+    "Relation"
 ]
 
 const versionTypes = [
     "None", "Allow Versions",
-
 ]
 
 
 
 export default function Creation({ entity }) {
+    const [form] = Form.useForm()
+    const [entities, setEntities] = useState([])
     const router = useRouter()
 
     async function onFinish(values) {
@@ -56,8 +60,49 @@ export default function Creation({ entity }) {
         router.push("/entity/exploration")
     }
 
-    function createInstance(stuff) {
+    async function getEntities() {
+        if (entities.length !== 0) return
+        const response = await fetch("/api/entities", {
+            method: "GET",
+        })
+        const json = JSON.parse(await response.json())
+        setEntities(json)
+    }
+
+    function createInstance() {
         router.push(`/instance/${entity._id}/creation`)
+    }
+
+    function getEntityOptions() {
+        return entities.map(thisEntity =>
+            <Select.Option key={thisEntity._id} value={thisEntity.name} entity={thisEntity}>
+            </Select.Option>)
+    }
+
+    function getAttributeOptions(attributeIndex) {
+        const attributes = form.getFieldValue("attributes")
+        if (!attributes[attributeIndex].relation) return undefined
+        const attributeEntity = entities.find(entity => entity._id === attributes[attributeIndex].relation.entity._id)
+        if (attributeEntity) {
+            return entity.attributes.map(entity_attribute =>
+                <Select.Option key={entity_attribute.name} value={entity_attribute.name}>
+                </Select.Option>
+            )
+        }
+    }
+
+    const onSearch = (values) => {
+        console.log('Received values of form:', values);
+    };
+
+    const updateRelationProperties = (attributeIndex) => {
+        return (_label, option) => {
+            // Update the _id 
+            const attributes = form.getFieldValue("attributes")
+            attributes[attributeIndex].relation.entity._id = option.entity._id
+            attributes[attributeIndex].relation.attribute = undefined
+            form.setFieldsValue({ "attributes": attributes })
+        }
     }
 
     return (
@@ -68,7 +113,7 @@ export default function Creation({ entity }) {
                     <h2>{entity ? "Modify Entity" : "Create Entity"}</h2>
                 </div>
             </Row>
-            <Form name="Creation" onFinish={onFinish} autoComplete="off" initialValues={entity}>
+            <Form form={form} name="Creation" onFinish={onFinish} autoComplete="off" initialValues={entity}>
 
                 <Form.Item name="name" label="Name" rules={[{ required: true, message: "Missing name" }]} {...formItemLayout}>
                     <Input />
@@ -135,6 +180,65 @@ export default function Creation({ entity }) {
 
                                     <Form.Item noStyle key={[field.key, "minus"]}>
                                         <MinusCircleOutlined key={[field.key, "minus"]} onClick={() => remove(field.name)} />
+                                    </Form.Item>
+
+                                    <Form.Item
+                                        noStyle
+                                        shouldUpdate={(prevValues, currentValues) =>
+                                            currentValues.attributes[field.name] &&
+                                            (
+                                                !prevValues.attributes[field.name] ||
+                                                prevValues.attributes[field.name].type !== currentValues.attributes[field.name].type
+                                            )
+                                        }
+                                    >
+                                        {({ getFieldValue }) => {
+                                            const currentAttribute = getFieldValue('attributes')[field.name]
+
+                                            if (!currentAttribute || currentAttribute.type === undefined) return null
+
+                                            if (currentAttribute.type === "Relation") getEntities()
+
+                                            return currentAttribute.type === "Relation" ?
+                                                <Form.Item noStyle>
+                                                    <Form.Item
+                                                        hidden
+                                                        key={[field.name, "relation", "entity", "_id"]}
+                                                        name={[field.name, "relation", "entity", "_id"]}
+                                                    ><Input /></Form.Item>
+                                                    <Form.Item
+                                                        key={[field.name, "relation", "entity", "name"]}
+                                                        name={[field.name, "relation", "entity", "name"]}
+                                                        style={{ display: "inline-block", width: "calc(50% - 8px)" }}
+                                                    >
+                                                        <Select
+                                                            showSearch
+                                                            placeholder="Select a entity"
+                                                            onChange={updateRelationProperties(field.name)}
+                                                            onSearch={onSearch}
+                                                        >
+                                                            {getEntityOptions()}
+                                                        </Select>
+
+                                                    </Form.Item>
+                                                    <Form.Item
+                                                        key={[field.name, "relation", "attribute"]}
+                                                        name={[field.name, "relation", "attribute"]}
+                                                        style={{ display: "inline-block", width: "calc(50% - 8px)", margin: "0 8px" }}
+                                                    >
+                                                        <Select
+                                                            mode="multiple"
+                                                            placeholder="Select Attribute"
+                                                        >
+                                                            {getAttributeOptions(field.name)}
+                                                        </Select>
+
+                                                    </Form.Item>
+                                                </Form.Item>
+                                                : null
+
+
+                                        }}
                                     </Form.Item>
 
                                     <Form.Item
